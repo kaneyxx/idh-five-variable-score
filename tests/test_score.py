@@ -40,7 +40,7 @@ def test_zero_maximum_missing_and_cold_start_profiles() -> None:
     assert zero.predicted_probability == pytest.approx(source_probability(0))
     assert zero.specification["schema_version"] == "2.0.0"
     assert zero.specification["reported_rule_scope"] == (
-        "code-only implementation of the published fixed Nadir90 "
+        "code-only implementation of the fixed Nadir90 "
         "five-variable point rule and its probability mapping; model "
         "fitting, variable selection, and private-data analyses are "
         "out of scope"
@@ -172,7 +172,7 @@ def test_source_and_offset_probability_api() -> None:
         probability_with_intercept_offset(10, float("inf"))
 
 
-def test_complete_lookup_matches_published_probability_map() -> None:
+def test_complete_lookup_matches_the_specified_probability_map() -> None:
     lookup = probability_lookup()
     assert len(lookup) == 49
     assert [row["total_score"] for row in lookup] == list(range(49))
@@ -346,7 +346,7 @@ def test_machine_readable_spec_matches_implementation() -> None:
     assert spec["probability_maps"]["complete_lookup"]["probability_column"] == "predicted_risk"
     assert "sites" not in spec["probability_maps"]
     assert spec["provenance"] == {
-        "artifact_scope": "code-only fixed published rule",
+        "artifact_scope": "code-only fixed rule",
         "raw_patient_or_session_data_included": False,
         "model_training_or_refitting_included": False,
         "row_level_outputs_written": False,

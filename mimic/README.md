@@ -6,7 +6,7 @@ features, outcomes, scores, or predictions. MIMIC-IV data are not redistributed;
 each runner must obtain PhysioNet credentials and accept the applicable data-use
 agreement.
 
-The repository bundles the published reference numbers for this analysis in
+The repository bundles the reference values for this analysis in
 `verification_targets.json`. Every run compares itself with them field by field
 and writes the outcome into `target_verification`. The command exits `0` only
 when every check passes and `2` otherwise. No MIMIC-IV record, identifier, or
@@ -89,5 +89,5 @@ are authoritative for execution.
 The output contains cohort counts, missingness, endpoint metadata, point
 estimates, and, when `--bootstrap-replicates` is given, interval bounds. Passing
 the synthetic tests is not a raw MIMIC numerical replay: only a credentialed run
-whose `target_verification.status` is `passed` reproduces the published
+whose `target_verification.status` is `passed` reproduces the reported
 analysis.

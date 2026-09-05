@@ -143,7 +143,7 @@ def load_score_contract(path: str | Path | None = None) -> ScoreContract:
         )
     if alpha != EXPECTED_SCORE_INTERCEPT or beta != EXPECTED_SCORE_COEFFICIENT:
         raise ValueError(
-            "Probability map differs from the published score equation"
+            "Probability map differs from the score equation in this repository"
         )
     return ScoreContract(
         path=score_path.resolve(),

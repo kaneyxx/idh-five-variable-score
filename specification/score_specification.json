@@ -5,8 +5,8 @@
     "range_semantics": "closed validity ranges; score-bin lower bounds are inclusive and upper bounds are exclusive",
     "invalid_numeric_policy": "nonfinite, out-of-range, and otherwise invalid numeric predictor values use the predictor-specific frozen missing branch",
     "public_api_units": "uf_bw_percent is expressed in percentage points; enter 3.5 for 3.5%, not 0.035",
-    "score_source": "fixed published Nadir90 five-variable point rule",
-    "reported_rule_scope": "code-only implementation of the published fixed Nadir90 five-variable point rule and its probability mapping; model fitting, variable selection, and private-data analyses are out of scope",
+    "score_source": "fixed Nadir90 five-variable point rule",
+    "reported_rule_scope": "code-only implementation of the fixed Nadir90 five-variable point rule and its probability mapping; model fitting, variable selection, and private-data analyses are out of scope",
     "semantic_alignment": {
       "outcome_window": "(T0, recorded treatment end]",
       "history_event": "prior-session post-start nadir SBP below 90 mm Hg",
@@ -194,7 +194,7 @@
       "rows": 49,
       "probability_column": "predicted_risk"
     },
-    "interpretation_boundary": "The bundled lookup is the fixed published probability mapping. Local calibration must be assessed before deployment in other institutions or periods."
+    "interpretation_boundary": "The bundled lookup is the fixed probability mapping. Local calibration must be assessed before deployment in other institutions or periods."
   },
   "csv_validation_contract": {
     "encoding": "UTF-8 or UTF-8 with BOM",
@@ -246,7 +246,7 @@
     "fixed_slope_intercept_offset": "descriptive alias of delta retained in point metrics"
   },
   "provenance": {
-    "artifact_scope": "code-only fixed published rule",
+    "artifact_scope": "code-only fixed rule",
     "raw_patient_or_session_data_included": false,
     "model_training_or_refitting_included": false,
     "row_level_outputs_written": false

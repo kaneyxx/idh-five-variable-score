@@ -1,10 +1,15 @@
 # IDH five-variable score — MIMIC-IV reproduction package
 
 This repository contains everything needed to recompute the MIMIC-IV v2.2
-analysis of the published five-variable intradialytic hypotension (IDH) score,
+analysis of the five-variable intradialytic hypotension (IDH) score,
 and nothing else. It holds the fixed 0–48 point rule, its probability equation,
 the raw-to-aggregate MIMIC-IV workflow, and the reference numbers that a
 credentialed run is expected to reproduce.
+
+> **Status.** The manuscript describing this score is under review and is not
+> yet published. The reference values in `mimic/verification_targets.json` are
+> the values that manuscript reports; nothing here should be read as a
+> published result.
 
 It contains **no** patient- or session-level data, no model-training or
 variable-selection code, and no data, constants, or results from the private
@@ -33,7 +38,7 @@ result = calculate_idh_score(
 )
 
 print(result.total_points)          # 30
-print(result.predicted_probability) # published probability equation
+print(result.predicted_probability) # probability equation
 print(result.component_points)      # five component contributions
 ```
 
@@ -98,7 +103,7 @@ python -m mimic.run_pipeline \
   --output-json mimic_aggregate_result.json
 ```
 
-The run compares itself with the published reference in
+The run compares itself with the reference values in
 [`mimic/verification_targets.json`](mimic/verification_targets.json) and writes
 the per-field result into `target_verification`. It exits `0` only when every
 check passes and `2` otherwise, so a divergence cannot be mistaken for a
@@ -159,7 +164,7 @@ predictions, identifiers, or bootstrap multiplicities.
 - `src/idh_score/` — scorer, probability equation, and aggregate-only validator.
 - `specification/` — machine-readable fixed rule and definitions.
 - `reference/` — human-readable score and predicted-risk tables.
-- `mimic/` — credentialed MIMIC-IV workflow and its published reference numbers.
+- `mimic/` — credentialed MIMIC-IV workflow and its reference values.
 - `tests/` — synthetic scientific and software regression tests, plus the
   release-boundary guards in `tests/test_public_package.py`.
 - `scripts/` — sensitive-content scanner and the reference-aggregate generator.

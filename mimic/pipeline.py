@@ -122,7 +122,7 @@ def run_pipeline(
         )
 
     result: dict[str, Any] = {
-        "artifact_status": "credentialed_run_verified_against_published_reference",
+        "artifact_status": "credentialed_run_verified_against_reference_values",
         "schema_version": "2.1.0",
         "analysis": "MIMIC-IV feature-constrained partial-rule transport stress test",
         "dataset": {"name": "MIMIC-IV", "version": MIMIC_VERSION},
@@ -132,6 +132,7 @@ def run_pipeline(
             "identifiers_written": False,
         },
         "score": {
+            "specification_version": contract.specification_version,
             "public_score_specification_sha256": contract.specification_sha256,
             "minimum": contract.minimum,
             "maximum": contract.maximum,
@@ -142,7 +143,7 @@ def run_pipeline(
                 "alpha": contract.alpha,
                 "beta": contract.beta,
             },
-            "probability_mapping": "published score equation; no MIMIC refit",
+            "probability_mapping": "score equation as specified; no MIMIC refit",
             "history_event": "prior-session post-start nadir SBP below 90 mm Hg",
         },
         "history_feature": {

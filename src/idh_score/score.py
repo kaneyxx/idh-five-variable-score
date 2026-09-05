@@ -1,7 +1,7 @@
-"""Reference implementation of the published five-variable IDH point rule.
+"""Reference implementation of the five-variable IDH point rule.
 
-This module implements the fixed 0--48 point rule and its published
-probability mapping. It does not reproduce model fitting, variable
+This module implements the fixed 0--48 point rule and its probability
+mapping. It does not reproduce model fitting, variable
 selection, or any analysis of private patient data.
 """
 
@@ -59,7 +59,7 @@ def _specification_metadata() -> dict[str, object]:
             "same-day and future sessions excluded; cold start is observed 0"
         ),
         "reported_rule_scope": (
-            "code-only implementation of the published fixed Nadir90 "
+            "code-only implementation of the fixed Nadir90 "
             "five-variable point rule and its probability mapping; model "
             "fitting, variable selection, and private-data analyses are "
             "out of scope"
@@ -245,7 +245,7 @@ def probability_with_intercept_offset(
 
 
 def source_probability(total_points: int) -> float:
-    """Return the published probability for a total from 0 to 48."""
+    """Return the probability for a total from 0 to 48."""
 
     return probability_with_intercept_offset(total_points, 0.0)
 

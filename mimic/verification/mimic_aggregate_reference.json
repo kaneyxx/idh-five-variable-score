@@ -1,6 +1,6 @@
 {
   "analysis": "MIMIC-IV feature-constrained partial-rule transport stress test",
-  "artifact_status": "credentialed_run_verified_against_published_reference",
+  "artifact_status": "credentialed_run_verified_against_reference_values",
   "cohort_flow": {
     "canonicalization": {
       "canonical_hd_sessions": 4332,
@@ -178,13 +178,14 @@
     },
     "maximum": 48,
     "minimum": 0,
-    "probability_mapping": "published score equation; no MIMIC refit",
-    "public_score_specification_sha256": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+    "probability_mapping": "score equation as specified; no MIMIC refit",
+    "public_score_specification_sha256": "68EEBCEDF0576F0C4F3C985BAB61225C36A95D73E5BF906C9E0E987CC8C79CAB",
     "risk_equation": {
       "alpha": -4.321773159969571,
       "beta": 0.17227817775653662,
       "link": "logistic"
     },
+    "specification_version": "2.0.0",
     "uf_bw_missing_points": 4
   },
   "sensitivity": {
@@ -214,9 +215,9 @@
   "target_verification": {
     "checks": [
       {
-        "expected": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
-        "field": "score.public_score_specification_sha256",
-        "observed": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+        "expected": "2.0.0",
+        "field": "score.specification_version",
+        "observed": "2.0.0",
         "passed": true
       },
       {
@@ -383,7 +384,7 @@
       }
     ],
     "failure_count": 0,
-    "reference_status": "published_reference_for_the_credentialed_mimic_iv_v2_2_analysis",
+    "reference_status": "reference_values_for_the_credentialed_mimic_iv_v2_2_analysis",
     "status": "passed"
   },
   "uncertainty": {

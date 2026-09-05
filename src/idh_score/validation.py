@@ -653,7 +653,7 @@ def validate_csv(
 
     if intercept_offset is None:
         selected_offset = 0.0
-        mapping_source = "published_score_equation"
+        mapping_source = "specified_score_equation"
     else:
         # The score helper performs strict real/finite validation.
         probability_with_intercept_offset(0, intercept_offset)
@@ -901,7 +901,7 @@ def build_validation_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--intercept-offset",
         type=float,
-        help="Finite custom offset from the published score intercept",
+        help="Finite custom offset from the score intercept",
     )
     parser.add_argument(
         "--patient-id",

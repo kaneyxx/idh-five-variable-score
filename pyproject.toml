@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "idh-five-variable-score"
 version = "1.0.0.dev0"
-description = "Reference implementation of the published 0-48 point IDH score and its MIMIC-IV v2.2 reproduction workflow"
+description = "Reference implementation of the five-variable 0-48 point IDH score and its MIMIC-IV v2.2 reproduction workflow"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "BSD-3-Clause"

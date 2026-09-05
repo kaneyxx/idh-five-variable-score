@@ -21,7 +21,7 @@
   ],
   "properties": {
     "artifact_status": {
-      "const": "credentialed_run_verified_against_published_reference"
+      "const": "credentialed_run_verified_against_reference_values"
     },
     "schema_version": {
       "const": "2.1.0"
@@ -67,6 +67,7 @@
     "score": {
       "type": "object",
       "required": [
+        "specification_version",
         "public_score_specification_sha256",
         "minimum",
         "maximum",
@@ -77,6 +78,9 @@
         "history_event"
       ],
       "properties": {
+        "specification_version": {
+          "const": "2.0.0"
+        },
         "public_score_specification_sha256": {
           "type": "string",
           "pattern": "^[0-9A-F]{64}$"

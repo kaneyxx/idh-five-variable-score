@@ -1,7 +1,7 @@
 # Public scope
 
-This repository is the MIMIC-IV reproduction package for the published
-five-variable IDH score. It is code plus two score lookup tables plus the
+This repository is the MIMIC-IV reproduction package for the five-variable IDH
+score. It is code plus two score lookup tables plus the
 reference numbers for one analysis.
 
 ## Included
@@ -10,8 +10,8 @@ reference numbers for one analysis.
 - a generic intercept-offset function for a locally estimated recalibration;
 - aggregate-only validation with optional patient-cluster bootstrap;
 - the credentialed MIMIC-IV v2.2 raw-to-aggregate workflow;
-- the published MIMIC-IV reference numbers, which every credentialed run is
-  checked against automatically;
+- the MIMIC-IV reference values, which every credentialed run is checked
+  against automatically;
 - the patient-cluster bootstrap that produces the reported confidence intervals;
 - synthetic tests, machine-readable contracts, and two score lookup tables.
 
@@ -39,7 +39,8 @@ the exception stays confined to the split.
 
 ## Interpretation
 
-The scorer reproduces the published arithmetic from five supplied inputs. It
+The manuscript describing this score is under review and is not yet published.
+The scorer reproduces the reported arithmetic from five supplied inputs. It
 does not reproduce the private-data study that produced the constants. Users
 should evaluate calibration in their own population before interpreting absolute
 risk.

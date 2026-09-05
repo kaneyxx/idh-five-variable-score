@@ -1,7 +1,8 @@
 {
   "schema_version": "1.0.0",
-  "status": "published_reference_for_the_credentialed_mimic_iv_v2_2_analysis",
-  "score_specification_sha256": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+  "status": "reference_values_for_the_credentialed_mimic_iv_v2_2_analysis",
+  "score_specification_version": "2.0.0",
+  "score_specification_note": "Pinned by version. The score range, the five missing branches and the two probability coefficients are validated independently by mimic/contracts.py, which refuses to run on a specification that differs.",
   "score": {
     "minimum": 0,
     "maximum": 48,

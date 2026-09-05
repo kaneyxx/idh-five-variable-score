@@ -89,7 +89,7 @@ def main() -> int:
     if verification["status"] != "passed":
         print(
             f"Reference verification FAILED: {verification['failure_count']} "
-            "check(s) differ from the published aggregate; see "
+            "check(s) differ from the reference values; see "
             "target_verification in the output.",
             file=sys.stderr,
         )

@@ -10,7 +10,6 @@ that need it skip cleanly when it is not there.
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -38,7 +37,7 @@ def _reference() -> dict:
 def test_targets_file_is_the_one_the_pipeline_loads() -> None:
     assert default_targets_path() == ROOT / "mimic" / "verification_targets.json"
     assert set(load_targets()) >= {
-        "score_specification_sha256",
+        "score_specification_version",
         "score",
         "history_feature",
         "primary",
@@ -47,10 +46,20 @@ def test_targets_file_is_the_one_the_pipeline_loads() -> None:
 
 
 def test_targets_pin_the_repository_score_specification() -> None:
-    expected = hashlib.sha256(
-        (ROOT / "specification" / "score_specification.json").read_bytes()
-    ).hexdigest().upper()
-    assert load_targets()["score_specification_sha256"] == expected
+    """Version and every number in the specification are both pinned."""
+
+    from mimic.contracts import load_score_contract
+
+    contract = load_score_contract()
+    assert load_targets()["score_specification_version"] == contract.specification_version
+    # contracts.py is the real gate: it refuses to load a specification whose
+    # range, missing branches or coefficients differ from the frozen score.
+    assert (contract.minimum, contract.maximum) == (0, 48)
+    assert contract.missing_points == {
+        "Pre_HD_SBP": 1, "IDH_7D": 2, "UF_BW_Perc": 4, "Start_DBP": 3, "Heart_Rate": 2,
+    }
+    assert contract.alpha == -4.321773159969571
+    assert contract.beta == 0.17227817775653662
 
 
 def test_targets_declare_a_nadir90_only_history_and_no_refit() -> None:
@@ -80,7 +89,7 @@ def test_a_diverging_run_is_reported_as_failed() -> None:
     targets = load_targets()
     minimal = {
         "score": {
-            "public_score_specification_sha256": targets["score_specification_sha256"],
+            "specification_version": targets["score_specification_version"],
             **{k: targets["score"][k] for k in
                ("minimum", "maximum", "uf_bw_missing_points", "idh_7d_points")},
             "risk_equation": targets["score"]["risk_equation"],

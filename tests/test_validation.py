@@ -197,7 +197,7 @@ def test_validate_csv_runs_cluster_bootstrap_when_patient_id_complete(
         "start_inclusive": False,
         "end_inclusive": True,
     }
-    assert result["probability_mapping"]["source"] == "published_score_equation"
+    assert result["probability_mapping"]["source"] == "specified_score_equation"
     assert result["probability_mapping"]["applied_intercept_offset"] == 0.0
     assert result["audit"]["rows"] == 12
     assert result["audit"]["outcome"]["events"] == 4

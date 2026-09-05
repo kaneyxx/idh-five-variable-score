@@ -129,7 +129,7 @@ def test_public_schema_and_provenance_are_current_and_path_free() -> None:
     )
     assert schema["properties"]["schema_version"]["const"] == "2.1.0"
     assert schema["properties"]["artifact_status"]["const"] == (
-        "credentialed_run_verified_against_published_reference"
+        "credentialed_run_verified_against_reference_values"
     )
     # The released history feature is Nadir90 only: the schema pins the run to
     # report that no pre-SBP-dependent switch was used, and that the score was

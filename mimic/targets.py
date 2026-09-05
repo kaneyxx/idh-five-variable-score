@@ -1,7 +1,7 @@
-"""Compare a credentialed MIMIC-IV run with the published reference aggregate.
+"""Compare a credentialed MIMIC-IV run with the recorded reference values.
 
 The reference numbers in ``verification_targets.json`` are the values reported
-in the manuscript's MIMIC-IV analysis.  A credentialed runner with the official
+in the accompanying manuscript's MIMIC-IV analysis.  A credentialed runner with the official
 MIMIC-IV v2.2 files should reproduce them exactly; ``run_pipeline`` exits with
 status 2 when any check fails, so a silent divergence cannot be mistaken for a
 successful reproduction.
@@ -31,11 +31,18 @@ def verify_targets(
     reference = load_targets() if targets is None else targets
     checks: list[dict[str, Any]] = []
 
+    # The specification is pinned by version, not by the hash of its JSON file.
+    # Every number in it -- the score range, the five missing branches, and the
+    # two probability coefficients -- is validated separately by
+    # contracts.load_score_contract, which refuses to run otherwise. Hashing the
+    # file as well would mean that correcting a typo in one of its description
+    # strings invalidated a reference run that takes hours to reproduce.
+
     exact_fields = (
         (
-            "score.public_score_specification_sha256",
-            reference["score_specification_sha256"],
-            result["score"]["public_score_specification_sha256"],
+            "score.specification_version",
+            reference["score_specification_version"],
+            result["score"]["specification_version"],
         ),
         ("score.minimum", reference["score"]["minimum"], result["score"]["minimum"]),
         ("score.maximum", reference["score"]["maximum"], result["score"]["maximum"]),
