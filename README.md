@@ -83,10 +83,32 @@ The machine-readable authoritative contract is
 P(Nadir90) = expit(-4.321773159969571 + 0.17227817775653662 * score)
 ```
 
+Each additional point multiplies the modelled odds of Nadir90 by
+`exp(0.172278) = 1.19`.
+
 `probability_with_intercept_offset(score, offset)` applies an externally
 estimated intercept adjustment while keeping the score coefficient fixed.
 Absolute risk should be recalibrated and evaluated before use in a different
 institution or time period.
+
+### Why the constants are written to full precision
+
+The two coefficients above are stored as the shortest decimal strings that
+round-trip to the exact IEEE-754 doubles produced by the fit. That is a
+reproducibility requirement, not a precision claim: parsing a shorter string
+yields a different double, and the aggregate checks in
+`mimic/verification_targets.json` compare four of the six metrics to 1e-12.
+
+For reading and for hand calculation, far fewer digits are needed. Rounding both
+coefficients to six decimals reproduces all 49 risks to within 1.1e-6, which is
+identical to the full-precision value once the risk is expressed as a percentage
+to two decimal places; five decimals already suffice for one decimal place. The
+accompanying manuscript therefore reports the equation as
+`p = expit(-4.321773 + 0.172278 x score)`.
+
+Neither figure says anything about statistical precision. Both coefficients are
+estimates from a finite sample, and their sampling uncertainty is many orders of
+magnitude larger than the last digits shown here.
 
 ## Reproducing the MIMIC-IV analysis
 
