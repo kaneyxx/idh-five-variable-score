@@ -1,0 +1,12 @@
+Aggregate data and documentation license: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026, Kuan-Hung Liu and co-authors.
+
+The score lookup tables and documentation in this release may be shared and
+adapted for any purpose, provided appropriate credit is given, a link to the
+license is provided, and changes are indicated.
+
+License terms: https://creativecommons.org/licenses/by/4.0/
+
+This notice does not grant access to, or rights in, any patient-level data,
+private source-system extracts, trained model objects, or third-party datasets.

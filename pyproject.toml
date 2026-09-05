@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools==80.10.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "idh-five-variable-score"
+version = "1.0.0.dev0"
+description = "Reference implementation of the published 0-48 point IDH score and its MIMIC-IV v2.2 reproduction workflow"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "BSD-3-Clause"
+authors = [
+  {name = "Kuan-Hung Liu"},
+  {name = "Fang-Yi Su"},
+  {name = "An-Shun Tai"},
+  {name = "Sheng-Hao Tseng"},
+  {name = "Kuan-Yen Chen"},
+  {name = "Yu-Huan Chiu"},
+  {name = "Wei-Ren Lin"},
+  {name = "Ying-Hsuan Lin"},
+  {name = "Chen-Yi Zhang"},
+  {name = "Edward Chia-Cheng Lai"},
+  {name = "Chih-Yen Hsiao"},
+  {name = "Ming-Cheng Wang"},
+  {name = "Yau-Sheng Tsai"},
+  {name = "Jung-Hsien Chiang"},
+]
+dependencies = []
+
+[project.optional-dependencies]
+validation = [
+  "numpy==2.3.5",
+  "scipy==1.17.0",
+  "scikit-learn==1.8.0",
+]
+mimic = [
+  "numpy==2.3.5",
+  "pandas==3.0.0",
+  "scipy==1.17.0",
+  "scikit-learn==1.8.0",
+]
+test = [
+  "numpy==2.3.5",
+  "pandas==3.0.0",
+  "scipy==1.17.0",
+  "scikit-learn==1.8.0",
+  "pytest==9.1.1",
+]
+
+[project.scripts]
+idh-validate = "idh_score.validation:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"

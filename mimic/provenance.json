@@ -1,0 +1,59 @@
+{
+  "schema_version": "2.0.0",
+  "dataset": {
+    "name": "MIMIC-IV",
+    "version": "2.2",
+    "access": "Credentialed PhysioNet access and the MIMIC data-use agreement are required."
+  },
+  "logical_inputs": {
+    "icu/procedureevents.csv.gz": {
+      "sha256": "FB01265DEDC45A0C66DD5E1B44B84CDF096878FB8543E3E8CCE8DADFB977EF57",
+      "uses": "Intermittent HD index procedures and CRRT-at-start exclusion"
+    },
+    "icu/chartevents.csv.gz": {
+      "sha256": "451E55859336059A83135B0DCDD3631B413B26DD5553ADD220B0F0944ADA6A25",
+      "uses": "Pre-index SBP/DBP/heart rate and post-start SBP endpoints"
+    }
+  },
+  "itemids": {
+    "intermittent_hd": 225441,
+    "crrt": [225802, 225803, 225809, 225955],
+    "nibp_sbp": 220179,
+    "abp_sbp": 220050,
+    "nibp_dbp": 220180,
+    "abp_dbp": 220051,
+    "heart_rate": 220045
+  },
+  "prediction_time": {
+    "T0": "procedureevents.starttime",
+    "pre_vital_window": "[T0 - 2 h, T0] by charttime",
+    "tie_rule": "Closest/latest charttime; NIBP wins an exact SBP or DBP timestamp tie"
+  },
+  "outcome": {
+    "window": "(T0, min(documented HD end, T0 + 6 h)]",
+    "T0_excluded": true,
+    "right_endpoint_included": true,
+    "exactly_six_hours_included": true,
+    "primary_provenance": "Historical operational broad 20--350 mm Hg individual-SBP screen followed by a 50--250 mm Hg selected-nadir eligibility rule",
+    "sensitivity": "Per-measurement 50--250 mm Hg screening before nadir selection"
+  },
+  "split": {
+    "algorithm": "StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=20260724)",
+    "group": "subject_id",
+    "assignment": "fold 0 locked test; fold 1 validation; folds 2--4 train",
+    "patient_disjoint": true,
+    "historical_crrt_at_start_rule": "crrt_start <= T0 <= crrt_end; the end-equality case is retained solely to reproduce the pre-existing split ledger",
+    "historical_stratification_variable": "nadir SBP <90 mm Hg when pre-dialysis SBP <160 mm Hg, otherwise nadir SBP <100 mm Hg; retained verbatim for the sole purpose of reproducing the pre-existing patient-disjoint fold assignment. It is neither the analysis outcome nor the seven-day history event, both of which are Nadir90 (nadir SBP <90 mm Hg)."
+  },
+  "score": {
+    "public_specification_version": "2.0.0",
+    "probability_mapping": "Published score probability equation; no MIMIC refit",
+    "range": [0, 48],
+    "uf_bw_policy": "Structurally unavailable; current frozen +4 missing branch",
+    "history_policy": "Count prior-session post-start nadir SBP below 90 mm Hg among observable primary-eligible HD sessions in the preceding seven calendar days; primary eligibility requires pre-SBP and selected nadir 50--250 mm Hg, at least one post-start SBP, positive duration, and no CRRT at T0; no observable prior labelled HD remains missing"
+  },
+  "privacy": {
+    "public_outputs": "Aggregate counts, metrics, contracts, and hashes only",
+    "prohibited_outputs": "MIMIC identifiers, session-level features, outcomes, scores, probabilities, or predictions"
+  }
+}

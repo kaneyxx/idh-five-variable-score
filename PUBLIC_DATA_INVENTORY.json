@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "policy": "Every bundled tabular file must be an explicitly inventoried score lookup. Patient- and session-level tables are prohibited, as is any table derived from the private development or external-validation cohorts.",
+  "aggregate_tables": {
+    "reference/risk_lookup_0_48.csv": {
+      "rows": 49,
+      "columns": [
+        "total_score",
+        "predicted_risk",
+        "predicted_risk_percent"
+      ]
+    },
+    "reference/score_rule.csv": {
+      "rows": 28,
+      "columns": [
+        "feature",
+        "public_argument",
+        "unit",
+        "bin",
+        "points"
+      ]
+    }
+  },
+  "prohibited_artifacts": [
+    "private study patient- or session-level data",
+    "private-cohort aggregates, shape functions, or per-site probability mappings",
+    "MIMIC-IV patient- or session-level data",
+    "direct or linkable identifiers",
+    "trained model objects or pickle files",
+    "credentials or connection strings",
+    "local absolute paths"
+  ]
+}

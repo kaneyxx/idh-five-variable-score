@@ -1,0 +1,254 @@
+{
+  "schema_version": "2.0.0",
+  "status": "fixed_reported_rule_code_only",
+  "specification": {
+    "range_semantics": "closed validity ranges; score-bin lower bounds are inclusive and upper bounds are exclusive",
+    "invalid_numeric_policy": "nonfinite, out-of-range, and otherwise invalid numeric predictor values use the predictor-specific frozen missing branch",
+    "public_api_units": "uf_bw_percent is expressed in percentage points; enter 3.5 for 3.5%, not 0.035",
+    "score_source": "fixed published Nadir90 five-variable point rule",
+    "reported_rule_scope": "code-only implementation of the published fixed Nadir90 five-variable point rule and its probability mapping; model fitting, variable selection, and private-data analyses are out of scope",
+    "semantic_alignment": {
+      "outcome_window": "(T0, recorded treatment end]",
+      "history_event": "prior-session post-start nadir SBP below 90 mm Hg",
+      "minimum_sessions_per_patient": null
+    }
+  },
+  "outcome": {
+    "name": "Nadir90",
+    "definition": "current-session intradialytic nadir systolic blood pressure below 90 mm Hg",
+    "comparison_operator": "<",
+    "threshold_mm_hg": 90.0,
+    "prediction_unit": "outpatient maintenance-hemodialysis session",
+    "measurement_window": {
+      "start": "treatment initiation",
+      "end": "recorded treatment duration",
+      "notation": "(T0, recorded treatment end]",
+      "start_inclusive": false,
+      "end_inclusive": true,
+      "source_time_rule": "0 < minutes_from_start <= actual_duration_min"
+    },
+    "valid_intradialytic_sbp_range_mm_hg": {
+      "minimum": 50.0,
+      "maximum": 250.0,
+      "minimum_inclusive": true,
+      "maximum_inclusive": true
+    },
+    "csv_encoding": {
+      "column": "outcome",
+      "event": 1,
+      "non_event": 0,
+      "declared_missing_token_rows_excluded_from_metrics": true,
+      "nonmissing_nonnumeric_or_nonfinite_values_allowed": false,
+      "other_nonmissing_values_allowed": false,
+      "minimum_class_support": "at least one event and one non-event"
+    }
+  },
+  "history_feature": {
+    "id": "IDH_7D",
+    "public_argument": "idh_events_prior_7d",
+    "source_outcome": {
+      "name": "Nadir90",
+      "definition": "prior-session post-start nadir systolic blood pressure below 90 mm Hg",
+      "threshold_mm_hg": 90.0,
+      "comparison_operator": "<"
+    },
+    "window": {
+      "time_basis": "patient-specific normalized dialysis calendar date",
+      "window_days": 7,
+      "notation": "[index_date - 7 days, index_date)",
+      "start_inclusive": true,
+      "end_exclusive": true,
+      "same_day_sessions_excluded": true,
+      "future_sessions_excluded": true
+    },
+    "cold_start_rule": "no prior eligible dialysis session is an observed count of 0, not missing",
+    "left_censoring_rule": "retain the observed prior-event count, including 0, when less than 7 days of linked history are available; do not impute unavailable pre-cohort events",
+    "validity": {
+      "type": "nonnegative integer count",
+      "minimum": 0,
+      "minimum_inclusive": true,
+      "maximum": null
+    },
+    "missing_or_invalid_points": 2
+  },
+  "score": {
+    "minimum": 0,
+    "maximum": 48,
+    "features": [
+      {
+        "id": "Pre_HD_SBP",
+        "public_argument": "sbp_mm_hg",
+        "label": "pre-dialysis systolic blood pressure",
+        "unit": "mm Hg",
+        "valid_range": {
+          "minimum": 50.0,
+          "maximum": 250.0,
+          "minimum_inclusive": true,
+          "maximum_inclusive": true
+        },
+        "missing_points": 1,
+        "invalid_points": 1,
+        "bins": [
+          {"lower": null, "upper": 100.0, "points": 11},
+          {"lower": 100.0, "upper": 110.0, "points": 5},
+          {"lower": 110.0, "upper": 120.0, "points": 3},
+          {"lower": 120.0, "upper": 130.0, "points": 1},
+          {"lower": 130.0, "upper": null, "points": 0}
+        ]
+      },
+      {
+        "id": "IDH_7D",
+        "public_argument": "idh_events_prior_7d",
+        "label": "prior Nadir90 events in the preceding 7 days",
+        "unit": "count",
+        "validity": {
+          "type": "nonnegative integer count",
+          "minimum": 0,
+          "minimum_inclusive": true,
+          "maximum": null
+        },
+        "missing_points": 2,
+        "invalid_points": 2,
+        "cold_start_rule": "no prior eligible dialysis session is an observed count of 0, not missing",
+        "bins": [
+          {"lower": 0, "upper": 1, "points": 0},
+          {"lower": 1, "upper": 2, "points": 8},
+          {"lower": 2, "upper": null, "points": 14}
+        ]
+      },
+      {
+        "id": "UF_BW_Perc",
+        "public_argument": "uf_bw_percent",
+        "label": "planned ultrafiltration divided by body weight",
+        "unit": "percentage points",
+        "valid_range": {
+          "minimum": 0.0,
+          "maximum": 25.0,
+          "minimum_inclusive": true,
+          "maximum_inclusive": true,
+          "model_scale_range": [0.0, 0.25]
+        },
+        "missing_points": 4,
+        "invalid_points": 4,
+        "bins": [
+          {"lower": null, "upper": 1.0, "points": 1},
+          {"lower": 1.0, "upper": 3.0, "points": 0},
+          {"lower": 3.0, "upper": 4.0, "points": 2},
+          {"lower": 4.0, "upper": 5.0, "points": 4},
+          {"lower": 5.0, "upper": null, "points": 5}
+        ]
+      },
+      {
+        "id": "Start_DBP",
+        "public_argument": "dbp_mm_hg",
+        "label": "starting diastolic blood pressure",
+        "unit": "mm Hg",
+        "valid_range": {
+          "minimum": 20.0,
+          "maximum": 150.0,
+          "minimum_inclusive": true,
+          "maximum_inclusive": true
+        },
+        "missing_points": 3,
+        "invalid_points": 3,
+        "bins": [
+          {"lower": null, "upper": 45.0, "points": 12},
+          {"lower": 45.0, "upper": 55.0, "points": 7},
+          {"lower": 55.0, "upper": 65.0, "points": 4},
+          {"lower": 65.0, "upper": 75.0, "points": 2},
+          {"lower": 75.0, "upper": null, "points": 0}
+        ]
+      },
+      {
+        "id": "Heart_Rate",
+        "public_argument": "heart_rate_bpm",
+        "label": "heart rate",
+        "unit": "beats/min",
+        "valid_range": {
+          "minimum": 20.0,
+          "maximum": 250.0,
+          "minimum_inclusive": true,
+          "maximum_inclusive": true
+        },
+        "missing_points": 2,
+        "invalid_points": 2,
+        "bins": [
+          {"lower": null, "upper": 70.0, "points": 0},
+          {"lower": 70.0, "upper": 80.0, "points": 1},
+          {"lower": 80.0, "upper": 90.0, "points": 3},
+          {"lower": 90.0, "upper": 100.0, "points": 4},
+          {"lower": 100.0, "upper": null, "points": 6}
+        ]
+      }
+    ]
+  },
+  "probability_maps": {
+    "link": "logistic",
+    "formula": "expit(-4.321773159969571 + 0.17227817775653662 * total_score)",
+    "score_intercept": -4.321773159969571,
+    "score_coefficient": 0.17227817775653662,
+    "complete_lookup": {
+      "function": "idh_score.probability_lookup",
+      "minimum_score": 0,
+      "maximum_score": 48,
+      "rows": 49,
+      "probability_column": "predicted_risk"
+    },
+    "interpretation_boundary": "The bundled lookup is the fixed published probability mapping. Local calibration must be assessed before deployment in other institutions or periods."
+  },
+  "csv_validation_contract": {
+    "encoding": "UTF-8 or UTF-8 with BOM",
+    "required_columns": [
+      "sbp_mm_hg",
+      "idh_events_prior_7d",
+      "uf_bw_percent",
+      "dbp_mm_hg",
+      "heart_rate_bpm",
+      "outcome"
+    ],
+    "optional_patient_identifier": "an arbitrary column selected explicitly with --patient-id COLUMN",
+    "extra_columns": "allowed but ignored; only their count is reported",
+    "predictor_missing_tokens_case_insensitive": ["", ".", "na", "n/a", "nan", "none", "null", "missing"],
+    "outcome_missing_tokens_case_insensitive": ["", ".", "na", "n/a", "nan", "none", "null", "missing"],
+    "feature_policy": "missing and invalid feature cells remain in the validation cohort and use the predictor-specific frozen missing branch",
+    "predictor_audit_counts": ["valid", "blank", "nonnumeric", "nonfinite", "below_range", "above_range", "mapped_to_missing"],
+    "history_predictor_additional_audit_counts": ["noninteger", "negative"],
+    "outcome_policy": "declared missing-token outcome rows are excluded from metrics and counted; every nonmissing outcome must be finite binary 0/1 Nadir90, and eligible rows must contain at least one event and one non-event",
+    "patient_id_policy": "only a column explicitly selected with --patient-id COLUMN is used; it may have any name and must be complete among outcome-eligible rows; without --patient-id no bootstrap is run, and no row bootstrap is substituted",
+    "bootstrap": {
+      "default_replicates_with_explicit_complete_patient_id": 1000,
+      "default_seed": 20260725,
+      "method": "patient-cluster multinomial percentile bootstrap",
+      "interval": [0.025, 0.975],
+      "default_minimum_finite_fraction": 0.95,
+      "conditional_on_fixed_score_and_probability_map": true
+    },
+    "uf_unit_warning": {
+      "trigger": "median of valid observed uf_bw_percent values < 0.5 or > 10 percentage points",
+      "meaning": "possible unit or source-field mapping problem",
+      "warning_only": true
+    },
+    "output_policy": {
+      "aggregate_only": true,
+      "row_level_scores_or_probabilities": false,
+      "patient_identifiers": false,
+      "bootstrap_draws_or_multiplicity_vectors": false,
+      "input_path": false
+    }
+  },
+  "validation_metrics": {
+    "auroc": "area under the receiver operating characteristic curve",
+    "auprc": "average precision, used as area under the precision-recall curve",
+    "brier": "mean squared probability error",
+    "observed_expected": "observed event count divided by summed predicted probability",
+    "joint_calibration": "unpenalized logistic outcome ~ intercept + slope * logit(predicted probability)",
+    "delta": "fixed-slope intercept offset solving sum(outcome) = sum(expit(logit(predicted probability) + delta)); prediction slope held at one",
+    "fixed_slope_intercept_offset": "descriptive alias of delta retained in point metrics"
+  },
+  "provenance": {
+    "artifact_scope": "code-only fixed published rule",
+    "raw_patient_or_session_data_included": false,
+    "model_training_or_refitting_included": false,
+    "row_level_outputs_written": false
+  }
+}

@@ -1,0 +1,29 @@
+feature,public_argument,unit,bin,points
+Pre_HD_SBP,sbp_mm_hg,mm Hg,50 to <100,11
+Pre_HD_SBP,sbp_mm_hg,mm Hg,100 to <110,5
+Pre_HD_SBP,sbp_mm_hg,mm Hg,110 to <120,3
+Pre_HD_SBP,sbp_mm_hg,mm Hg,120 to <130,1
+Pre_HD_SBP,sbp_mm_hg,mm Hg,130 to 250 inclusive,0
+Pre_HD_SBP,sbp_mm_hg,mm Hg,"missing, nonfinite, or outside 50-250",1
+IDH_7D,idh_events_prior_7d,count,0,0
+IDH_7D,idh_events_prior_7d,count,1,8
+IDH_7D,idh_events_prior_7d,count,>=2,14
+IDH_7D,idh_events_prior_7d,count,"missing, nonfinite, negative, or noninteger",2
+UF_BW_Perc,uf_bw_percent,percentage points,0 to <1,1
+UF_BW_Perc,uf_bw_percent,percentage points,1 to <3,0
+UF_BW_Perc,uf_bw_percent,percentage points,3 to <4,2
+UF_BW_Perc,uf_bw_percent,percentage points,4 to <5,4
+UF_BW_Perc,uf_bw_percent,percentage points,5 to 25 inclusive,5
+UF_BW_Perc,uf_bw_percent,percentage points,"missing, nonfinite, or outside 0-25",4
+Start_DBP,dbp_mm_hg,mm Hg,20 to <45,12
+Start_DBP,dbp_mm_hg,mm Hg,45 to <55,7
+Start_DBP,dbp_mm_hg,mm Hg,55 to <65,4
+Start_DBP,dbp_mm_hg,mm Hg,65 to <75,2
+Start_DBP,dbp_mm_hg,mm Hg,75 to 150 inclusive,0
+Start_DBP,dbp_mm_hg,mm Hg,"missing, nonfinite, or outside 20-150",3
+Heart_Rate,heart_rate_bpm,beats/min,20 to <70,0
+Heart_Rate,heart_rate_bpm,beats/min,70 to <80,1
+Heart_Rate,heart_rate_bpm,beats/min,80 to <90,3
+Heart_Rate,heart_rate_bpm,beats/min,90 to <100,4
+Heart_Rate,heart_rate_bpm,beats/min,100 to 250 inclusive,6
+Heart_Rate,heart_rate_bpm,beats/min,"missing, nonfinite, or outside 20-250",2

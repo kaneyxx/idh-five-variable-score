@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0.0",
+  "status": "published_reference_for_the_credentialed_mimic_iv_v2_2_analysis",
+  "score_specification_sha256": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+  "score": {
+    "minimum": 0,
+    "maximum": 48,
+    "uf_bw_missing_points": 4,
+    "idh_7d_points": {
+      "0": 0,
+      "1": 8,
+      ">=2": 14,
+      "missing": 2
+    },
+    "risk_equation": {
+      "link": "logistic",
+      "alpha": -4.321773159969571,
+      "beta": 0.17227817775653662
+    }
+  },
+  "history_feature": {
+    "definition": "count of observable prior primary-eligible HD sessions with selected nadir SBP <90 mm Hg in the preceding seven calendar days",
+    "pre_sbp_dependent_switch_used": false,
+    "score_refit": false,
+    "score_recalibrated": false
+  },
+  "environment": {
+    "python": "3.14.2",
+    "numpy": "2.3.5",
+    "pandas": "3.0.0",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "note": "The patient-disjoint split is produced by StratifiedGroupKFold and is sensitive to the scikit-learn version. Install requirements-lock.txt to reproduce the counts below.",
+    "floating_point_note": "AUROC, average precision, Brier and O:E are checked to 1e-12 rather than bit for bit because math.exp is not correctly rounded by every C library; adjacent doubles across platforms move Brier by at most 2.2e-16 and O:E by at most 4.2e-16 over this cohort. Calibration intercept and slope are BFGS solutions and are checked to 5e-4. See ENVIRONMENT.md."
+  },
+  "primary": {
+    "definition": "Historical operational combined-SBP endpoint in (T0, min(documented HD end, T0 + 6 h)]; individual values admitted at 20--350 mm Hg, selected nadir required to be 50--250 mm Hg.",
+    "counts": {
+      "sessions": 817,
+      "patients": 308,
+      "events": 198
+    },
+    "metrics": {
+      "auroc": {
+        "value": 0.7831383299880876,
+        "absolute_tolerance": 1e-12,
+        "reported": 0.783
+      },
+      "auprc": {
+        "value": 0.5472619420313182,
+        "absolute_tolerance": 1e-12,
+        "reported": 0.547
+      },
+      "brier": {
+        "value": 0.1469176538250695,
+        "absolute_tolerance": 1e-12,
+        "reported": 0.1469
+      },
+      "calibration_intercept": {
+        "value": -0.234,
+        "absolute_tolerance": 0.0005,
+        "reported": -0.234
+      },
+      "calibration_slope": {
+        "value": 0.831,
+        "absolute_tolerance": 0.0005,
+        "reported": 0.831
+      },
+      "observed_expected": {
+        "value": 0.9525325702894897,
+        "absolute_tolerance": 1e-12,
+        "reported": 0.953
+      }
+    },
+    "reported_confidence_intervals": {
+      "note": "The reported 95% patient-cluster intervals, taken from the hash-verified reference run over the complete official files. verify_targets() does not check these: the bounds for the two BFGS-solved quantities move in the third decimal across C libraries, and the number of finite replicates for them can differ too, because whether a borderline resampled cohort is detected as quasi-separated is platform-dependent. Reproduce them with --bootstrap-replicates 1000; expect the four rank-and-sum metrics to match closely and the two calibration bounds to agree to about two decimals.",
+      "method": "patient-cluster multinomial percentile bootstrap",
+      "n_bootstrap": 1000,
+      "seed": 20260725,
+      "interval": [
+        0.025,
+        0.975
+      ],
+      "generated_on": "macOS (Apple libm), CPython 3.14.2",
+      "metrics": {
+        "auprc": {
+          "lower": 0.46146959485636757,
+          "upper": 0.624460036650907,
+          "finite_replicates": 1000
+        },
+        "auroc": {
+          "lower": 0.7422505785408329,
+          "upper": 0.8238136309167449,
+          "finite_replicates": 1000
+        },
+        "brier": {
+          "lower": 0.12693055828138364,
+          "upper": 0.16536599864103366,
+          "finite_replicates": 1000
+        },
+        "calibration_intercept": {
+          "lower": -0.47075266616870537,
+          "upper": 0.00572844704756715,
+          "finite_replicates": 994
+        },
+        "calibration_slope": {
+          "lower": 0.7001335615398638,
+          "upper": 1.0066587729883314,
+          "finite_replicates": 994
+        },
+        "observed_expected": {
+          "lower": 0.8334972719265202,
+          "upper": 1.062739444274826,
+          "finite_replicates": 1000
+        }
+      }
+    }
+  },
+  "sensitivity": {
+    "definition": "Every SBP measurement is restricted to 50--250 mm Hg before selecting the nadir in the same right-closed six-hour window.",
+    "counts": {
+      "sessions": 819,
+      "patients": 308,
+      "events": 200
+    }
+  }
+}

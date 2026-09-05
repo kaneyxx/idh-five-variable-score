@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.dist-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+results.json
+*.pkl
+*.pickle

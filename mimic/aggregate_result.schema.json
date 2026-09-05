@@ -1,0 +1,415 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/idh-five-variable-score/mimic/aggregate-result-v2.schema.json",
+  "title": "Aggregate-only MIMIC-IV v2.2 point-estimate result",
+  "type": "object",
+  "required": [
+    "artifact_status",
+    "schema_version",
+    "analysis",
+    "dataset",
+    "privacy",
+    "score",
+    "history_feature",
+    "endpoint",
+    "source_verification",
+    "target_verification",
+    "uncertainty",
+    "cohort_flow",
+    "primary",
+    "sensitivity"
+  ],
+  "properties": {
+    "artifact_status": {
+      "const": "credentialed_run_verified_against_published_reference"
+    },
+    "schema_version": {
+      "const": "2.1.0"
+    },
+    "analysis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "MIMIC-IV"
+        },
+        "version": {
+          "const": "2.2"
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": [
+        "output_level",
+        "row_level_data_written",
+        "identifiers_written"
+      ],
+      "properties": {
+        "output_level": {
+          "const": "aggregate_only"
+        },
+        "row_level_data_written": {
+          "const": false
+        },
+        "identifiers_written": {
+          "const": false
+        }
+      }
+    },
+    "score": {
+      "type": "object",
+      "required": [
+        "public_score_specification_sha256",
+        "minimum",
+        "maximum",
+        "uf_bw_missing_points",
+        "idh_7d_points",
+        "risk_equation",
+        "probability_mapping",
+        "history_event"
+      ],
+      "properties": {
+        "public_score_specification_sha256": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{64}$"
+        },
+        "minimum": {
+          "const": 0
+        },
+        "maximum": {
+          "const": 48
+        },
+        "uf_bw_missing_points": {
+          "const": 4
+        },
+        "probability_mapping": {
+          "type": "string",
+          "minLength": 1
+        },
+        "history_event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "idh_7d_points": {
+          "type": "object",
+          "required": [
+            "0",
+            "1",
+            ">=2",
+            "missing"
+          ],
+          "properties": {
+            "0": {
+              "const": 0
+            },
+            "1": {
+              "const": 8
+            },
+            ">=2": {
+              "const": 14
+            },
+            "missing": {
+              "const": 2
+            }
+          }
+        },
+        "risk_equation": {
+          "type": "object",
+          "required": [
+            "link",
+            "alpha",
+            "beta"
+          ],
+          "properties": {
+            "link": {
+              "const": "logistic"
+            },
+            "alpha": {
+              "const": -4.321773159969571
+            },
+            "beta": {
+              "const": 0.17227817775653662
+            }
+          }
+        }
+      }
+    },
+    "history_feature": {
+      "type": "object",
+      "required": [
+        "definition",
+        "pre_sbp_dependent_switch_used",
+        "score_refit",
+        "score_recalibrated"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pre_sbp_dependent_switch_used": {
+          "const": false
+        },
+        "score_refit": {
+          "const": false
+        },
+        "score_recalibrated": {
+          "const": false
+        }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "required": [
+        "notation",
+        "start_inclusive",
+        "end_inclusive",
+        "exactly_six_hours_included",
+        "primary",
+        "sensitivity"
+      ],
+      "properties": {
+        "notation": {
+          "const": "(T0, min(documented HD end, T0 + 6 h)]"
+        },
+        "start_inclusive": {
+          "const": false
+        },
+        "end_inclusive": {
+          "const": true
+        },
+        "exactly_six_hours_included": {
+          "const": true
+        },
+        "primary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sensitivity": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "source_verification": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_checked"
+          ]
+        }
+      }
+    },
+    "target_verification": {
+      "type": "object",
+      "required": [
+        "status",
+        "reference_status",
+        "checks",
+        "failure_count"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed"
+          ]
+        },
+        "reference_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1
+        },
+        "failure_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "required": [
+        "patient_cluster_bootstrap_computed",
+        "note"
+      ],
+      "properties": {
+        "patient_cluster_bootstrap_computed": {
+          "const": false
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "cohort_flow": {
+      "type": "object"
+    },
+    "primary": {
+      "$ref": "#/$defs/cohortWithMetrics",
+      "properties": {
+        "bootstrap": {
+          "type": "object",
+          "description": "Present only when --bootstrap-replicates is given. Interval bounds and replicate bookkeeping only; never replicate values or multiplicities.",
+          "required": [
+            "status",
+            "method",
+            "n_bootstrap",
+            "seed",
+            "interval",
+            "metrics"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "minLength": 1
+            },
+            "method": {
+              "type": "string",
+              "minLength": 1
+            },
+            "n_bootstrap": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "seed": {
+              "type": "integer"
+            },
+            "patients": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "interval": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "replicate_values_returned": {
+              "const": false
+            },
+            "patient_multiplicities_returned": {
+              "const": false
+            },
+            "metrics": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/cohortCountsOnly"
+    }
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "required": [
+        "sessions",
+        "patients",
+        "events",
+        "prevalence"
+      ],
+      "properties": {
+        "sessions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "patients": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "events": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "prevalence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "cohortWithMetrics": {
+      "type": "object",
+      "required": [
+        "role",
+        "counts",
+        "metrics"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "metrics": {
+          "type": "object",
+          "required": [
+            "auroc",
+            "auprc",
+            "brier",
+            "calibration_intercept",
+            "calibration_slope",
+            "observed_expected"
+          ],
+          "properties": {
+            "auroc": {
+              "type": "number"
+            },
+            "auprc": {
+              "type": "number"
+            },
+            "brier": {
+              "type": "number"
+            },
+            "calibration_intercept": {
+              "type": "number"
+            },
+            "calibration_slope": {
+              "type": "number"
+            },
+            "observed_expected": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "cohortCountsOnly": {
+      "type": "object",
+      "required": [
+        "role",
+        "counts"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        }
+      }
+    }
+  }
+}

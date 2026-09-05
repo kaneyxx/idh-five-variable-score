@@ -1,0 +1,393 @@
+{
+  "analysis": "MIMIC-IV feature-constrained partial-rule transport stress test",
+  "artifact_status": "credentialed_run_verified_against_published_reference",
+  "cohort_flow": {
+    "canonicalization": {
+      "canonical_hd_sessions": 4332,
+      "duplicate_rows_removed": 28,
+      "duplicate_start_groups": 28,
+      "raw_hd_sessions": 4360
+    },
+    "chartevents": {
+      "itemids": {
+        "abp_dbp": 220051,
+        "abp_sbp": 220050,
+        "heart_rate": 220045,
+        "nibp_dbp": 220180,
+        "nibp_sbp": 220179
+      },
+      "logical_source": "mimiciv_icu.chartevents",
+      "primary_poststart_measurements_20_350": 19937,
+      "sensitivity_poststart_measurements_50_250": 19924,
+      "sessions_with_heart_rate": 4341,
+      "sessions_with_pre_dbp": 4245,
+      "sessions_with_pre_sbp": 4245,
+      "sessions_with_primary_endpoint": 4180,
+      "sessions_with_sensitivity_endpoint": 4179,
+      "source_rows_scanned": 313645063,
+      "target_item_rows": 19122043,
+      "target_rows_in_tracked_stays": 1567835
+    },
+    "patient_disjoint_split": {
+      "by_split": {
+        "locked_test": {
+          "patients": 308,
+          "sessions": 819,
+          "split_stratum_positive": 203
+        },
+        "train": {
+          "patients": 935,
+          "sessions": 2451,
+          "split_stratum_positive": 607
+        },
+        "validation": {
+          "patients": 319,
+          "sessions": 819,
+          "split_stratum_positive": 203
+        }
+      },
+      "label_eligible_before_crrt_exclusion": 4136,
+      "label_eligible_crrt_at_start_excluded": 47,
+      "patient_overlap": 0,
+      "split_ledger_patients": 1562,
+      "split_ledger_sessions": 4089,
+      "split_seed": 20260724
+    },
+    "procedureevents": {
+      "canonical_hd_sessions": 4332,
+      "crrt_at_start_rule": "crrt_start <= T0 <= crrt_end (historical split compatibility)",
+      "crrt_itemids": [
+        225802,
+        225803,
+        225809,
+        225955
+      ],
+      "duplicate_rows_removed_by_canonicalization": 28,
+      "duplicate_start_groups": 28,
+      "hd_itemid": 225441,
+      "hd_sessions_with_crrt_active_at_start": 55,
+      "invalid_crrt_intervals_excluded": 0,
+      "logical_source": "mimiciv_icu.procedureevents",
+      "raw_hd_sessions": 4360,
+      "valid_positive_duration_crrt_rows": 4251
+    }
+  },
+  "dataset": {
+    "name": "MIMIC-IV",
+    "version": "2.2"
+  },
+  "endpoint": {
+    "end_inclusive": true,
+    "exactly_six_hours_included": true,
+    "notation": "(T0, min(documented HD end, T0 + 6 h)]",
+    "primary": "historical operational construction: admit individual SBP 20--350 mm Hg, select session nadir, then require selected nadir 50--250 mm Hg",
+    "sensitivity": "protocol-concordant construction: require each SBP measurement 50--250 mm Hg before selecting the session nadir",
+    "start_inclusive": false
+  },
+  "history_feature": {
+    "definition": "count of observable prior primary-eligible HD sessions with selected nadir SBP <90 mm Hg in the preceding seven calendar days",
+    "pre_sbp_dependent_switch_used": false,
+    "score_recalibrated": false,
+    "score_refit": false
+  },
+  "primary": {
+    "bootstrap": {
+      "interval": [
+        0.025,
+        0.975
+      ],
+      "method": "patient-cluster multinomial percentile bootstrap",
+      "metrics": {
+        "auprc": {
+          "finite_replicates": 1000,
+          "lower": 0.46146959485636757,
+          "upper": 0.624460036650907
+        },
+        "auroc": {
+          "finite_replicates": 1000,
+          "lower": 0.7422505785408329,
+          "upper": 0.8238136309167449
+        },
+        "brier": {
+          "finite_replicates": 1000,
+          "lower": 0.12693055828138364,
+          "upper": 0.16536599864103366
+        },
+        "calibration_intercept": {
+          "finite_replicates": 994,
+          "lower": -0.47075266616870537,
+          "upper": 0.00572844704756715
+        },
+        "calibration_slope": {
+          "finite_replicates": 994,
+          "lower": 0.7001335615398638,
+          "upper": 1.0066587729883314
+        },
+        "observed_expected": {
+          "finite_replicates": 1000,
+          "lower": 0.8334972719265202,
+          "upper": 1.062739444274826
+        }
+      },
+      "minimum_finite_replicates": 950,
+      "n_bootstrap": 1000,
+      "non_estimable": [],
+      "patient_multiplicities_returned": false,
+      "patients": 308,
+      "replicate_values_returned": false,
+      "seed": 20260725,
+      "status": "complete"
+    },
+    "counts": {
+      "events": 198,
+      "patients": 308,
+      "prevalence": 0.2423500611995104,
+      "sessions": 817
+    },
+    "metrics": {
+      "auprc": 0.5472619420313182,
+      "auroc": 0.7831383299880876,
+      "brier": 0.14691765382506944,
+      "calibration_intercept": -0.23361412715195648,
+      "calibration_slope": 0.8308793446416839,
+      "observed_expected": 0.9525325702894887
+    },
+    "missingness": {
+      "heart_rate": 2,
+      "idh_history": 472,
+      "pre_dbp": 1,
+      "pre_sbp": 0,
+      "uf_bw_percent_structural": 817
+    },
+    "missingness_definition": "score-native missing branch: nonfinite or out-of-contract numeric inputs; UF/body weight is structurally unavailable",
+    "role": "primary_20_350_measurement_screen_then_50_250_nadir_eligibility"
+  },
+  "privacy": {
+    "identifiers_written": false,
+    "output_level": "aggregate_only",
+    "row_level_data_written": false
+  },
+  "schema_version": "2.1.0",
+  "score": {
+    "history_event": "prior-session post-start nadir SBP below 90 mm Hg",
+    "idh_7d_points": {
+      "0": 0,
+      "1": 8,
+      ">=2": 14,
+      "missing": 2
+    },
+    "maximum": 48,
+    "minimum": 0,
+    "probability_mapping": "published score equation; no MIMIC refit",
+    "public_score_specification_sha256": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+    "risk_equation": {
+      "alpha": -4.321773159969571,
+      "beta": 0.17227817775653662,
+      "link": "logistic"
+    },
+    "uf_bw_missing_points": 4
+  },
+  "sensitivity": {
+    "counts": {
+      "events": 200,
+      "patients": 308,
+      "prevalence": 0.2442002442002442,
+      "sessions": 819
+    },
+    "role": "per_measurement_50_250_sensitivity"
+  },
+  "source_verification": {
+    "files": {
+      "chartevents.csv.gz": {
+        "expected_sha256": "451E55859336059A83135B0DCDD3631B413B26DD5553ADD220B0F0944ADA6A25",
+        "matches": true,
+        "observed_sha256": "451E55859336059A83135B0DCDD3631B413B26DD5553ADD220B0F0944ADA6A25"
+      },
+      "procedureevents.csv.gz": {
+        "expected_sha256": "FB01265DEDC45A0C66DD5E1B44B84CDF096878FB8543E3E8CCE8DADFB977EF57",
+        "matches": true,
+        "observed_sha256": "FB01265DEDC45A0C66DD5E1B44B84CDF096878FB8543E3E8CCE8DADFB977EF57"
+      }
+    },
+    "status": "passed"
+  },
+  "target_verification": {
+    "checks": [
+      {
+        "expected": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+        "field": "score.public_score_specification_sha256",
+        "observed": "B14F0B7D9595222569A56F2022752C50115FE853CDF03E0A3DF0FF05E4CFB78B",
+        "passed": true
+      },
+      {
+        "expected": 0,
+        "field": "score.minimum",
+        "observed": 0,
+        "passed": true
+      },
+      {
+        "expected": 48,
+        "field": "score.maximum",
+        "observed": 48,
+        "passed": true
+      },
+      {
+        "expected": 4,
+        "field": "score.uf_bw_missing_points",
+        "observed": 4,
+        "passed": true
+      },
+      {
+        "expected": {
+          "0": 0,
+          "1": 8,
+          ">=2": 14,
+          "missing": 2
+        },
+        "field": "score.idh_7d_points",
+        "observed": {
+          "0": 0,
+          "1": 8,
+          ">=2": 14,
+          "missing": 2
+        },
+        "passed": true
+      },
+      {
+        "expected": {
+          "alpha": -4.321773159969571,
+          "beta": 0.17227817775653662,
+          "link": "logistic"
+        },
+        "field": "score.risk_equation",
+        "observed": {
+          "alpha": -4.321773159969571,
+          "beta": 0.17227817775653662,
+          "link": "logistic"
+        },
+        "passed": true
+      },
+      {
+        "expected": "count of observable prior primary-eligible HD sessions with selected nadir SBP <90 mm Hg in the preceding seven calendar days",
+        "field": "history_feature.definition",
+        "observed": "count of observable prior primary-eligible HD sessions with selected nadir SBP <90 mm Hg in the preceding seven calendar days",
+        "passed": true
+      },
+      {
+        "expected": false,
+        "field": "history_feature.pre_sbp_dependent_switch_used",
+        "observed": false,
+        "passed": true
+      },
+      {
+        "expected": false,
+        "field": "history_feature.score_refit",
+        "observed": false,
+        "passed": true
+      },
+      {
+        "expected": false,
+        "field": "history_feature.score_recalibrated",
+        "observed": false,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 817,
+        "field": "primary.counts.sessions",
+        "observed": 817,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 308,
+        "field": "primary.counts.patients",
+        "observed": 308,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 198,
+        "field": "primary.counts.events",
+        "observed": 198,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 819,
+        "field": "sensitivity.counts.sessions",
+        "observed": 819,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 308,
+        "field": "sensitivity.counts.patients",
+        "observed": 308,
+        "passed": true
+      },
+      {
+        "absolute_tolerance": 0,
+        "expected": 200,
+        "field": "sensitivity.counts.events",
+        "observed": 200,
+        "passed": true
+      },
+      {
+        "absolute_difference": 0.0,
+        "absolute_tolerance": 1e-12,
+        "expected": 0.7831383299880876,
+        "field": "primary.metrics.auroc",
+        "observed": 0.7831383299880876,
+        "passed": true
+      },
+      {
+        "absolute_difference": 0.0,
+        "absolute_tolerance": 1e-12,
+        "expected": 0.5472619420313182,
+        "field": "primary.metrics.auprc",
+        "observed": 0.5472619420313182,
+        "passed": true
+      },
+      {
+        "absolute_difference": 5.551115123125783e-17,
+        "absolute_tolerance": 1e-12,
+        "expected": 0.1469176538250695,
+        "field": "primary.metrics.brier",
+        "observed": 0.14691765382506944,
+        "passed": true
+      },
+      {
+        "absolute_difference": 0.0003858728480435336,
+        "absolute_tolerance": 0.0005,
+        "expected": -0.234,
+        "field": "primary.metrics.calibration_intercept",
+        "observed": -0.23361412715195648,
+        "passed": true
+      },
+      {
+        "absolute_difference": 0.00012065535831606855,
+        "absolute_tolerance": 0.0005,
+        "expected": 0.831,
+        "field": "primary.metrics.calibration_slope",
+        "observed": 0.8308793446416839,
+        "passed": true
+      },
+      {
+        "absolute_difference": 9.992007221626409e-16,
+        "absolute_tolerance": 1e-12,
+        "expected": 0.9525325702894897,
+        "field": "primary.metrics.observed_expected",
+        "observed": 0.9525325702894887,
+        "passed": true
+      }
+    ],
+    "failure_count": 0,
+    "reference_status": "published_reference_for_the_credentialed_mimic_iv_v2_2_analysis",
+    "status": "passed"
+  },
+  "uncertainty": {
+    "note": "Patient-cluster confidence intervals are computed only when --bootstrap-replicates is given; the default run reports point estimates alone.",
+    "patient_cluster_bootstrap_computed": true
+  }
+}

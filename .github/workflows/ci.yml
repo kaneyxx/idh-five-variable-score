@@ -1,0 +1,43 @@
+name: QA
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    # Both C libraries are exercised on purpose. math.exp is not correctly
+    # rounded by every libm, so glibc and the macOS libm can return adjacent
+    # doubles for the same input; a Linux-only matrix would not notice a
+    # tolerance that is too tight. See ENVIRONMENT.md.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Set up exact CPython
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14.2"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install exact requirements and package
+        run: |
+          python -m pip install --requirement requirements-lock.txt
+          python -m pip install --no-deps --editable .
+
+      - name: Run full test suite
+        run: python -m pytest --quiet
+
+      - name: Scan public release content
+        run: python scripts/scan_sensitive_content.py

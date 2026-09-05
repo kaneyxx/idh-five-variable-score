@@ -1,0 +1,68 @@
+cff-version: 1.2.0
+message: "If you use this score specification or reference implementation, please cite the associated manuscript."
+title: "IDH five-variable score: reference implementation and local validation tools"
+type: software
+version: "1.0.0-dev"
+license: BSD-3-Clause
+authors:
+  - family-names: Liu
+    given-names: Kuan-Hung
+    orcid: "https://orcid.org/0000-0001-5988-6123"
+  - family-names: Su
+    given-names: Fang-Yi
+  - family-names: Tai
+    given-names: An-Shun
+  - family-names: Tseng
+    given-names: Sheng-Hao
+  - family-names: Chen
+    given-names: Kuan-Yen
+  - family-names: Chiu
+    given-names: Yu-Huan
+  - family-names: Lin
+    given-names: Wei-Ren
+  - family-names: Lin
+    given-names: Ying-Hsuan
+  - family-names: Zhang
+    given-names: Chen-Yi
+  - family-names: Lai
+    given-names: Edward Chia-Cheng
+  - family-names: Hsiao
+    given-names: Chih-Yen
+  - family-names: Wang
+    given-names: Ming-Cheng
+  - family-names: Tsai
+    given-names: Yau-Sheng
+  - family-names: Chiang
+    given-names: Jung-Hsien
+preferred-citation:
+  type: article
+  title: "A Hand-Calculable Five-Variable Score for Intradialytic Hypotension Derived Directly From an Interpretable Nonlinear Model: Multicenter External Validation"
+  authors:
+    - family-names: Liu
+      given-names: Kuan-Hung
+    - family-names: Su
+      given-names: Fang-Yi
+    - family-names: Tai
+      given-names: An-Shun
+    - family-names: Tseng
+      given-names: Sheng-Hao
+    - family-names: Chen
+      given-names: Kuan-Yen
+    - family-names: Chiu
+      given-names: Yu-Huan
+    - family-names: Lin
+      given-names: Wei-Ren
+    - family-names: Lin
+      given-names: Ying-Hsuan
+    - family-names: Zhang
+      given-names: Chen-Yi
+    - family-names: Lai
+      given-names: Edward Chia-Cheng
+    - family-names: Hsiao
+      given-names: Chih-Yen
+    - family-names: Wang
+      given-names: Ming-Cheng
+    - family-names: Tsai
+      given-names: Yau-Sheng
+    - family-names: Chiang
+      given-names: Jung-Hsien
